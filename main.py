@@ -130,13 +130,7 @@ class App(Frame):
                     dates.append(line['date'])
                     commits = []
                     for commitment in commitments:
-                        try:
-                            if line[commitment]:
-                                commits.append(line[commitment])
-                            else:
-                                commits.append(None)
-                        except KeyError:
-                            commits.append(None)
+                        commits.append(line.get(commitment) if line.get(commitment) else None)
                     commit_data.append(commits)
             if dates[-1] != now:
                 updated_date = dates[-1]
@@ -203,8 +197,8 @@ class App(Frame):
                     item.grid(row=i, column=j, padx=2, pady=2, ipadx=2, ipady=2, sticky=NSEW)
 
     def forget_all(self):
-        for i, row in enumerate(self.item_list):
-            for j, item in enumerate(row):
+        for row in self.item_list:
+            for item in row:
                 if item is not None:
                     item.grid_forget()
 
